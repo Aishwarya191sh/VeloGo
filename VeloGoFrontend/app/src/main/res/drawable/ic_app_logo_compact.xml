@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Compact Steering Wheel & Aerodynamic Arc Logo -->
+    <!-- Outer rim -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3.5"
+        android:pathData="M24,6 A18,18 0 1,1 23.9,6 Z" />
+    <!-- Lower spokes -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:pathData="M9,24 L39,24 M24,24 L24,41" />
+    <!-- Steering wheel hub -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,20 A4,4 0 1,0 24,28 A4,4 0 1,0 24,20 Z" />
+    <!-- Upper dashboard speed arc -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M16,16 Q24,11 32,16" />
+</vector>
