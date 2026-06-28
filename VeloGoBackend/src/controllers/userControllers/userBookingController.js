@@ -1,0 +1,178 @@
+import mongoose from "mongoose";
+import Booking from "../../models/BookingModel.js";
+import { errorHandler } from "../../utils/error.js";
+import { availableAtDate } from "../../services/checkAvailableVehicle.js";
+import Vehicle from "../../models/vehicleModel.js";
+
+// getting vehicles without booking for selected Date and location
+export const getVehiclesWithoutBooking = async (req, res, next) => {
+  try {
+    const { pickUpDistrict, pickUpLocation, pickupDate, dropOffDate, model } = req.body;
+
+    if (!pickUpDistrict || !pickUpLocation)
+      return next(errorHandler(409, "pickup District and location needed"));
+
+    if (!pickupDate || !dropOffDate)
+      return next(errorHandler(409, "pickup , dropffdate  is required"));
+
+    // Check if pickupDate is before dropOffDate
+    if (new Date(pickupDate) >= new Date(dropOffDate))
+      return next(errorHandler(409, "Invalid date range"));
+
+    const vehiclesAvailableAtDate = await availableAtDate(
+      pickupDate,
+      dropOffDate
+    );
+
+    if (!vehiclesAvailableAtDate) {
+      return res.status(404).json({
+        success: false,
+        message: "No vehicles available for the specified time period.",
+      });
+    }
+
+    const availableVehicles = vehiclesAvailableAtDate.filter(
+      (cur) =>
+        cur.district === pickUpDistrict &&
+        cur.location === pickUpLocation &&
+        cur.isDeleted === "false" &&
+        cur.isAdminApproved === true &&
+        cur.isRejected !== true
+    );
+
+    if (!availableVehicles) {
+      return res.status(404).json({
+        success: false,
+        message: "No vehicles available at this location.",
+      });
+    }
+
+    // If there is no next middleware after this one, send the response
+    if (!req.route || !req.route.stack || req.route.stack.length === 1) {
+      return res.status(200).json({
+        success: true,
+        data: availableVehicles,
+      });
+    }
+
+    // If there is a next middleware, pass control to it
+    res.locals.actionResult = [availableVehicles, model];
+    next();
+  } catch (error) {
+    console.error("Get vehicles without booking error:", error);
+    return next(
+      errorHandler(500, "An error occurred while fetching available vehicles.")
+    );
+  }
+};
+
+// getting all variants of a model which are not booked
+export const showAllVariants = async (req, res, next) => {
+  try {
+    const actionResult = res.locals.actionResult;
+    const model = actionResult[1];
+
+    if (!actionResult[0]) {
+      return next(errorHandler(404, "no actionResult"));
+    }
+    const allVariants = actionResult[0].filter((cur) => {
+      return cur.model === model;
+    });
+
+    res.status(200).json(allVariants);
+  } catch (error) {
+    next(errorHandler(500, "internal error in showAllVariants"));
+  }
+};
+
+// show one representative of each model type available
+export const showOneofkind = async (req, res, next) => {
+  try {
+    const actionResult = res.locals.actionResult;
+
+    const modelsMap = {};
+    const singleVehicleofModel = [];
+
+    if (!actionResult) {
+      return next(errorHandler(404, "no actionResult"));
+    }
+
+    actionResult[0].forEach((cur) => {
+      if (!modelsMap[cur.model]) {
+        modelsMap[cur.model] = true;
+        singleVehicleofModel.push(cur);
+      }
+    });
+
+    if (!singleVehicleofModel) {
+      return next(errorHandler(404, "no vehicles available"));
+    }
+
+    res.status(200).json(singleVehicleofModel);
+  } catch (error) {
+    console.error("Show one of kind error:", error);
+    next(errorHandler(500, "error in showOneofkind"));
+  }
+};
+
+// filtering vehicles
+export const filterVehicles = async (req, res, next) => {
+  try {
+    if (!req.body) {
+      return next(errorHandler(401, "bad request no body"));
+    }
+    const transformedData = req.body;
+    if (!transformedData) {
+      return next(errorHandler(401, "select filter option first"));
+    }
+    const generateMatchStage = (data) => {
+      const carTypes = [];
+      data.forEach((cur) => {
+        if (cur.type === "car_type") {
+          const firstKey = Object.keys(cur).find((key) => key !== "type");
+          if (firstKey) {
+            carTypes.push(firstKey);
+          }
+        }
+      });
+
+      const transmissions = [];
+      data.forEach((cur) => {
+        if (cur.type === "transmition") {
+          Object.keys(cur).forEach((key) => {
+            if (key !== "type" && cur[key]) {
+              transmissions.push(key);
+            }
+          });
+        }
+      });
+
+      return {
+        $match: {
+          $and: [
+            carTypes.length > 0 ? { car_type: { $in: carTypes } } : null,
+            transmissions.length > 0
+              ? { transmition: { $in: transmissions } }
+              : null,
+          ].filter((condition) => condition !== null),
+        },
+      };
+    };
+
+    const matchStage = generateMatchStage(transformedData);
+
+    const filteredVehicles = await Vehicle.aggregate([matchStage]);
+    if (!filteredVehicles) {
+      return next(errorHandler(401, "no vehicles found"));
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        filteredVehicles,
+      },
+    });
+  } catch (error) {
+    console.error("Filter vehicles error:", error);
+    next(errorHandler(500, "internal server error in filterVehicles"));
+  }
+};
