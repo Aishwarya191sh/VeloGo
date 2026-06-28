@@ -16,19 +16,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.frontend.ui.components.MainLayoutScaffold
 import com.example.frontend.ui.screens.auth.*
+import com.example.frontend.ui.screens.search.*
+import com.example.frontend.ui.screens.home.HomeScreen
 
 @Composable
 fun AppNavigation(
     authViewModel: AuthViewModel,
+    searchViewModel: SearchFlowViewModel,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
     val currentSession by authViewModel.currentSession.collectAsState()
+
+    val navBackStackEntry = navController.currentBackStackEntryAsState().value
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val isCustomerRoute = currentRoute in listOf(
+        Screen.Home.route,
+        Screen.Search.route,
+        Screen.SearchResults.route,
+        Screen.VehicleDetails.route
+    )
 
     val startDestination = if (currentSession != null) {
         Screen.Home.route
@@ -36,12 +52,35 @@ fun AppNavigation(
         Screen.SignIn.route
     }
 
-    CustomerNavHost(
-        navController = navController,
-        startDestination = startDestination,
-        authViewModel = authViewModel,
-        modifier = modifier
-    )
+    if (isCustomerRoute) {
+        MainLayoutScaffold(
+            navController = navController,
+            userName = currentSession?.username ?: "Shreyas",
+            userEmail = currentSession?.email ?: "shreyas@rentaride.com",
+            onSignOut = {
+                authViewModel.signOut()
+                navController.navigate(Screen.SignIn.route) {
+                    popUpTo(0) { inclusive = true }
+                }
+            }
+        ) { innerPadding ->
+            CustomerNavHost(
+                navController = navController,
+                startDestination = startDestination,
+                authViewModel = authViewModel,
+                searchViewModel = searchViewModel,
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    } else {
+        CustomerNavHost(
+            navController = navController,
+            startDestination = startDestination,
+            authViewModel = authViewModel,
+            searchViewModel = searchViewModel,
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
@@ -49,8 +88,11 @@ fun CustomerNavHost(
     navController: NavHostController,
     startDestination: String,
     authViewModel: AuthViewModel,
+    searchViewModel: SearchFlowViewModel,
     modifier: Modifier = Modifier
 ) {
+    val currentSession by authViewModel.currentSession.collectAsState()
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -94,30 +136,36 @@ fun CustomerNavHost(
         }
 
         composable(Screen.Home.route) {
-            PlaceholderScreen("VeloGo Dashboard") {
-                authViewModel.signOut()
-                navController.navigate(Screen.SignIn.route) {
-                    popUpTo(0) { inclusive = true }
-                }
-            }
+            HomeScreen(
+                navController = navController,
+                viewModel = searchViewModel,
+                username = currentSession?.username
+            )
         }
-    }
-}
 
-@Composable
-fun PlaceholderScreen(title: String, onSignOut: () -> Unit) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = title, style = MaterialTheme.typography.headlineMedium)
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = onSignOut) {
-                Text("Sign Out")
-            }
+        composable(Screen.Search.route) {
+            SearchScreen(
+                navController = navController
+            )
+        }
+
+        composable(Screen.SearchResults.route) {
+            SearchResultsScreen(
+                navController = navController,
+                viewModel = searchViewModel
+            )
+        }
+
+        composable(
+            route = Screen.VehicleDetails.route,
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val vehicleId = backStackEntry.arguments?.getString("id") ?: ""
+            VehicleDetailsScreen(
+                navController = navController,
+                vehicleId = vehicleId,
+                searchFlowViewModel = searchViewModel
+            )
         }
     }
 }

@@ -11,6 +11,7 @@ import com.example.frontend.data.local.pref.AppTheme
 import com.example.frontend.data.local.pref.SettingsManager
 import com.example.frontend.ui.navigation.AppNavigation
 import com.example.frontend.ui.screens.auth.AuthViewModel
+import com.example.frontend.ui.screens.search.SearchFlowViewModel
 import com.example.frontend.ui.theme.FrontEndTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -37,9 +38,11 @@ class MainActivity : ComponentActivity() {
 
             FrontEndTheme(darkTheme = isDarkTheme) {
                 val authViewModel: AuthViewModel = hiltViewModel()
+                val searchViewModel: SearchFlowViewModel = hiltViewModel()
 
                 AppNavigation(
-                    authViewModel = authViewModel
+                    authViewModel = authViewModel,
+                    searchViewModel = searchViewModel
                 )
             }
         }

@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db.js";
 import { errorHandlerMiddleware } from "./middlewares/errorHandler.js";
 import authRoute from "./routes/authRoute.js";
+import userRoute from "./routes/userRoute.js";
+import adminRoute from "./routes/adminRoute.js";
 
 dotenv.config();
 
@@ -29,6 +31,8 @@ App.use(
 );
 
 App.use("/api/auth", authRoute);
+App.use("/api/user", userRoute);
+App.use("/api/admin", adminRoute);
 
 App.use(errorHandlerMiddleware);
 
