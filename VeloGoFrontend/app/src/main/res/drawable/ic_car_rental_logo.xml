@@ -1,0 +1,58 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Glowing background ring -->
+    <path
+        android:fillColor="#1200C853"
+        android:pathData="M50,10 A40,40 0 1,1 49.9,10 Z" />
+
+    <!-- Premium Brand Shield/Crest Outline -->
+    <path
+        android:strokeColor="#2500C853"
+        android:strokeWidth="1.8"
+        android:pathData="M24,24 L50,11 L76,24 L76,55 C76,71 50,87 50,87 C50,87 24,71 24,55 Z" />
+
+    <!-- Inner Shield Accent Line -->
+    <path
+        android:strokeColor="#4500C853"
+        android:strokeWidth="0.8"
+        android:pathData="M28,27 L50,16 L72,27 L72,53 C72,67 50,81 50,81 C50,81 28,67 28,53 Z" />
+
+    <!-- Aerodynamic Speed Wings (Velocity Concept) -->
+    <path
+        android:fillColor="#1800C853"
+        android:pathData="M16,42 Q50,22 84,42 Q50,30 16,42 Z" />
+    <path
+        android:fillColor="#3500C853"
+        android:pathData="M20,47 Q50,31 80,47 Q50,37 20,47 Z" />
+
+    <!-- Sleek Luxury Car Silhouette (Frontal View) -->
+    <!-- Car Cabin Roof -->
+    <path
+        android:fillColor="#FF00C853"
+        android:pathData="M38,44 Q50,36 62,44 C61,44 39,44 38,44 Z" />
+    <!-- Windshield -->
+    <path
+        android:fillColor="#FF00C853"
+        android:pathData="M36,46 L64,46 L60,51 L40,51 Z" />
+    <!-- Main Body & Hood -->
+    <path
+        android:fillColor="#FF00C853"
+        android:pathData="M27,53 C27,51 33,50 50,50 C67,50 73,51 73,53 L76,60 C77,62 76,64 73,64 L27,64 C24,64 23,62 24,60 Z" />
+
+    <!-- High-Glow Xenon Headlamps -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M31,57 C33,57 35,58.5 35,60 C35,60 31,60.5 30,59 C29,58.5 30,57 31,57 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M69,57 C67,57 65,58.5 65,60 C65,60 69,60.5 70,59 C71,58.5 70,57 69,57 Z" />
+
+    <!-- Lower Grill & Air Vent outline -->
+    <path
+        android:strokeColor="#20FFFFFF"
+        android:strokeWidth="1"
+        android:pathData="M40,62 L60,62" />
+</vector>
