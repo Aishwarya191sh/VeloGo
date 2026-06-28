@@ -2,6 +2,8 @@ package com.example.frontend.di
 
 import com.example.frontend.BuildConfig
 import com.example.frontend.data.remote.api.AuthApi
+import com.example.frontend.data.remote.api.UserApi
+import com.example.frontend.data.remote.api.AdminApi
 import com.example.frontend.data.remote.interceptor.AuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -58,5 +60,17 @@ object NetworkModule {
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthApi {
         return retrofit.create(AuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserApi(retrofit: Retrofit): UserApi {
+        return retrofit.create(UserApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAdminApi(retrofit: Retrofit): AdminApi {
+        return retrofit.create(AdminApi::class.java)
     }
 }
