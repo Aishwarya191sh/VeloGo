@@ -41,4 +41,9 @@ interface UserApi {
     suspend fun sendBookingDetailsEmail(
         @Body request: SendBookingEmailRequest
     ): Response<String>
+
+    @POST("api/user/findBookingsOfUser")
+    suspend fun findBookingsOfUser(
+        @Body request: UserBookingsRequest
+    ): Response<List<BookingResponseItem>>
 }

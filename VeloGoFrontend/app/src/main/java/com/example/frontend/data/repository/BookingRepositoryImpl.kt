@@ -92,6 +92,22 @@ class BookingRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun findBookingsOfUser(userId: String): Result<List<BookingDetails>> {
+        return try {
+            val response = userApi.findBookingsOfUser(UserBookingsRequest(userId))
+            if (response.isSuccessful && response.body() != null) {
+                val bookings = response.body()!!.map { it.toDomain() }
+                Result.success(bookings)
+            } else {
+                Result.failure(Exception(response.message().ifEmpty { "Failed to retrieve user bookings" }))
+            }
+        } catch (e: IOException) {
+            Result.failure(Exception("Network error. Please check your internet connection.", e))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun sendBookingEmail(toEmail: String, bookingDetails: BookingDetails): Result<Boolean> {
         return try {
             val responseItem = BookingResponseItem(

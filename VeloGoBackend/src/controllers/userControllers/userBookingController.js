@@ -365,3 +365,44 @@ export const sendBookingDetailsEamil = (req, res, next) => {
     next(error);
   }
 };
+
+export const findBookingsOfUser = async (req, res, next) => {
+  try {
+    if (!req.body) {
+      return next(errorHandler(409, "_id of user is required"));
+    }
+    const { userId } = req.body;
+    const convertedUserId = new mongoose.Types.ObjectId(userId);
+
+    const bookings = await Booking.aggregate([
+      {
+        $match: {
+          userId: convertedUserId,
+        },
+      },
+      {
+        $lookup: {
+          from: "vehicles",
+          localField: "vehicleId",
+          foreignField: "_id",
+          as: "result",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          bookingDetails: "$$ROOT",
+          vehicleDetails: {
+            $arrayElemAt: ["$result", 0],
+          },
+        },
+      },
+    ]);
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Find bookings of user error:", error);
+    next(errorHandler(500, "internal error in findBookingOfUser"));
+  }
+};
+

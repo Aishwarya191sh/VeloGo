@@ -50,10 +50,10 @@ fun MainLayoutScaffold(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Map routes to bottom navigation destinations (Search and Home only for this module)
     val bottomNavItems = listOf(
         BottomNavItem("Home", Screen.Home.route, R.drawable.ic_home),
-        BottomNavItem("Search", Screen.Search.route, R.drawable.ic_search)
+        BottomNavItem("Search", Screen.Search.route, R.drawable.ic_search),
+        BottomNavItem("Orders", Screen.Orders.route, R.drawable.ic_orders)
     )
 
     // Determine screen titles for TopAppBar
@@ -61,6 +61,7 @@ fun MainLayoutScaffold(
         Screen.Home.route -> "Dashboard"
         Screen.Search.route -> "Search Vehicles"
         Screen.SearchResults.route -> "Search Results"
+        Screen.Orders.route -> "My Bookings"
         else -> "VeloGo"
     }
 

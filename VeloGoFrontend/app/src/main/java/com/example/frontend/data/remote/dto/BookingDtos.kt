@@ -60,3 +60,7 @@ data class SendBookingEmailRequest(
     val toEmail: String,
     val data: List<BookingResponseItem>
 )
+
+data class UserBookingsRequest(
+    val userId: String
+)
