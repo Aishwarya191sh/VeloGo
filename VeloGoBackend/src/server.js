@@ -7,6 +7,8 @@ import { errorHandlerMiddleware } from "./middlewares/errorHandler.js";
 import authRoute from "./routes/authRoute.js";
 import userRoute from "./routes/userRoute.js";
 import adminRoute from "./routes/adminRoute.js";
+import vendorRoute from "./routes/venderRoute.js";
+import { cloudinaryConfig } from "./utils/cloudinaryConfig.js";
 
 dotenv.config();
 
@@ -30,9 +32,12 @@ App.use(
   })
 );
 
+App.use("*", cloudinaryConfig);
+
 App.use("/api/auth", authRoute);
 App.use("/api/user", userRoute);
 App.use("/api/admin", adminRoute);
+App.use("/api/vendor", vendorRoute);
 
 App.use(errorHandlerMiddleware);
 
