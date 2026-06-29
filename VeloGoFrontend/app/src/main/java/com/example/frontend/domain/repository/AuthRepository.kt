@@ -10,4 +10,6 @@ interface AuthRepository {
     fun signInWithGoogle(name: String, email: String, photo: String, isVendor: Boolean): Flow<Resource<User>>
     fun signOut(): Flow<Resource<Unit>>
     fun getSessionDetails(): Flow<User?>
+    fun vendorSignIn(email: String, password: String): Flow<Resource<User>>
+    fun vendorSignUp(username: String, email: String, password: String): Flow<Resource<String>>
 }
