@@ -176,6 +176,58 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun vendorSignIn(email: String, password: String): Flow<Resource<User>> = flow {
+        emit(Resource.Loading)
+        try {
+            val response = api.vendorSignIn(SignInRequest(email, password))
+            if (response.isSuccessful && response.body() != null) {
+                val userResponse = response.body()!!
+                val user = userResponse.toDomain()
+                
+                if (!user.isVendor) {
+                    emit(Resource.Error("Access Denied: Only vendor accounts can sign in here"))
+                    return@flow
+                }
+                
+                // Save tokens and session
+                val accessToken = userResponse.accessToken ?: ""
+                val refreshToken = userResponse.refreshToken ?: ""
+                sessionManager.saveSession(
+                    accessToken = accessToken,
+                    refreshToken = refreshToken,
+                    userId = user.id,
+                    username = user.username,
+                    email = user.email,
+                    role = "vendor",
+                    phoneNumber = userResponse.phoneNumber,
+                    adress = userResponse.adress
+                )
+                emit(Resource.Success(user))
+            } else {
+                val errorMsg = parseError(response.errorBody()?.string())
+                emit(Resource.Error(errorMsg))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage ?: "Network error", e))
+        }
+    }
+
+    override fun vendorSignUp(username: String, email: String, password: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading)
+        try {
+            val response = api.vendorSignUp(SignUpRequest(username, email, password))
+            if (response.isSuccessful && response.body() != null) {
+                val baseResponse = response.body()!!
+                emit(Resource.Success(baseResponse.message ?: "Sign up successful"))
+            } else {
+                val errorMsg = parseError(response.errorBody()?.string())
+                emit(Resource.Error(errorMsg))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage ?: "Network error", e))
+        }
+    }
+
     private fun parseError(errorJson: String?): String {
         if (errorJson.isNullOrEmpty()) return "An unknown error occurred"
         return try {

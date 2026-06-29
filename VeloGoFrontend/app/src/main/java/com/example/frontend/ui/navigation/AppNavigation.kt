@@ -18,6 +18,7 @@ import com.example.frontend.ui.screens.auth.*
 import com.example.frontend.ui.screens.search.*
 import com.example.frontend.ui.screens.booking.*
 import com.example.frontend.ui.screens.orders.*
+import com.example.frontend.ui.screens.vendor.*
 import com.example.frontend.ui.screens.home.HomeScreen
 
 @Composable
@@ -41,7 +42,10 @@ fun AppNavigation(
     )
 
     val startDestination = if (currentSession != null) {
-        Screen.Home.route
+        when {
+            currentSession!!.isVendor -> Screen.VendorDashboard.route
+            else -> Screen.Home.route
+        }
     } else {
         Screen.SignIn.route
     }
@@ -101,7 +105,9 @@ fun CustomerNavHost(
                     }
                 },
                 onNavigateToVendor = {
-                    // Placeholder
+                    navController.navigate(Screen.VendorDashboard.route) {
+                        popUpTo(Screen.SignIn.route) { inclusive = true }
+                    }
                 },
                 onNavigateToAdmin = {
                     // Placeholder
@@ -110,7 +116,7 @@ fun CustomerNavHost(
                     navController.navigate(Screen.SignUp.route)
                 },
                 onNavigateToVendorSignIn = {
-                    // Placeholder
+                    navController.navigate(Screen.VendorSignIn.route)
                 }
             )
         }
@@ -180,6 +186,53 @@ fun CustomerNavHost(
             OrdersScreen(
                 navController = navController,
                 viewModel = ordersViewModel
+            )
+        }
+
+        composable(Screen.VendorSignIn.route) {
+            VendorSignInScreen(
+                viewModel = authViewModel,
+                onNavigateToVendorDashboard = {
+                    navController.navigate(Screen.VendorDashboard.route) {
+                        popUpTo(Screen.VendorSignIn.route) { inclusive = true }
+                    }
+                },
+                onNavigateToVendorSignUp = {
+                    navController.navigate(Screen.VendorSignUp.route)
+                },
+                onNavigateToUserSignIn = {
+                    navController.navigate(Screen.SignIn.route) {
+                        popUpTo(Screen.VendorSignIn.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Screen.VendorSignUp.route) {
+            VendorSignUpScreen(
+                viewModel = authViewModel,
+                onNavigateToVendorSignIn = {
+                    navController.popBackStack()
+                },
+                onNavigateToVendorDashboard = {
+                    navController.navigate(Screen.VendorDashboard.route) {
+                        popUpTo(Screen.VendorSignUp.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Screen.VendorDashboard.route) {
+            val vendorViewModel: VendorViewModel = hiltViewModel()
+            VendorDashboardScreen(
+                navController = navController,
+                viewModel = vendorViewModel,
+                onSignOut = {
+                    authViewModel.signOut()
+                    navController.navigate(Screen.VendorSignIn.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
     }

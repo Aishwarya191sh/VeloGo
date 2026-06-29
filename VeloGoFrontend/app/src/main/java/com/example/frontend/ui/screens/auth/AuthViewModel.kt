@@ -15,7 +15,9 @@ class AuthViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
     private val googleSignInUseCase: GoogleSignInUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val getSessionUseCase: GetSessionUseCase
+    private val getSessionUseCase: GetSessionUseCase,
+    private val vendorSignInUseCase: VendorSignInUseCase,
+    private val vendorSignUpUseCase: VendorSignUpUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthUiState())
@@ -76,6 +78,33 @@ class AuthViewModel @Inject constructor(
             signOutUseCase().collect { resource ->
                 if (resource is Resource.Success) {
                     _uiState.update { AuthUiState() }
+                }
+            }
+        }
+    }
+
+    fun vendorSignIn(email: String, password: String) {
+        viewModelScope.launch {
+            vendorSignInUseCase(email, password).collect { resource ->
+                when (resource) {
+                    is Resource.Loading -> _uiState.update { it.copy(isLoading = true, error = null) }
+                    is Resource.Success -> _uiState.update { it.copy(isLoading = false, user = resource.data, error = null) }
+                    is Resource.Error -> _uiState.update { it.copy(isLoading = false, error = resource.message) }
+                }
+            }
+        }
+    }
+
+    fun vendorSignUp(username: String, email: String, password: String) {
+        viewModelScope.launch {
+            vendorSignUpUseCase(username, email, password).collect { resource ->
+                when (resource) {
+                    is Resource.Loading -> _uiState.update { it.copy(isLoading = true, error = null, signupSuccessMessage = null) }
+                    is Resource.Success -> {
+                        _uiState.update { it.copy(signupSuccessMessage = "Vendor account created successfully! Logging you in...") }
+                        vendorSignIn(email, password)
+                    }
+                    is Resource.Error -> _uiState.update { it.copy(isLoading = false, error = resource.message) }
                 }
             }
         }

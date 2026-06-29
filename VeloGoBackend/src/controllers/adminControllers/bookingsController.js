@@ -1,0 +1,26 @@
+import Booking from "../../models/BookingModel.js";
+import { errorHandler } from "../../utils/error.js";
+
+// change bookings status
+export const changeStatus = async (req, res, next) => {
+  try {
+    if (!req.body) {
+      next(errorHandler(409, "bad request vehicle id and new status needed"));
+      return;
+    }
+    const { id, status } = req.body;
+
+    const statusChanged = await Booking.findByIdAndUpdate(id, {
+      status: status,
+    });
+
+    if (!statusChanged) {
+      next(errorHandler(404, "status not changed or wrong id"));
+      return;
+    }
+    res.status(200).json({ message: "status changed" });
+  } catch (error) {
+    console.log(error);
+    next(errorHandler(500, "error in changeStatus"));
+  }
+};
