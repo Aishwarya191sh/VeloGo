@@ -165,5 +165,11 @@ fun CustomerNavHost(
                 searchFlowViewModel = searchViewModel
             )
         }
+
+        composable(Screen.BookingSuccess.route) {
+            BookingSuccessScreen(
+                navController = navController
+            )
+        }
     }
 }
