@@ -5,9 +5,10 @@ import {
   filterVehicles,
   showOneofkind,
   showAllVariants,
-  razorpayOrder,
   BookCar,
+  razorpayOrder,
   latestbookings,
+  sendBookingDetailsEamil,
 } from "../controllers/userControllers/userBookingController.js";
 
 const router = express.Router();
@@ -22,5 +23,6 @@ router.post("/showSingleofSameModel", getVehiclesWithoutBooking, showOneofkind);
 router.post("/razorpay", razorpayOrder);
 router.post("/bookCar", BookCar);
 router.post("/latestbookings", latestbookings);
+router.post("/sendBookingDetailsEamil", sendBookingDetailsEamil);
 
 export default router;
