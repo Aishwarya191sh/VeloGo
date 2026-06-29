@@ -27,5 +27,7 @@ interface BookingRepository {
 
     suspend fun getLatestBooking(userId: String): Result<BookingDetails?>
 
+    suspend fun findBookingsOfUser(userId: String): Result<List<BookingDetails>>
+
     suspend fun sendBookingEmail(toEmail: String, bookingDetails: BookingDetails): Result<Boolean>
 }
