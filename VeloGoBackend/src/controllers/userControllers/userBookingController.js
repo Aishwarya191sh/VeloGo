@@ -1,8 +1,43 @@
 import mongoose from "mongoose";
 import Booking from "../../models/BookingModel.js";
 import { errorHandler } from "../../utils/error.js";
+import Razorpay from "razorpay";
 import { availableAtDate } from "../../services/checkAvailableVehicle.js";
 import Vehicle from "../../models/vehicleModel.js";
+
+// creating razorpay order instance
+export const razorpayOrder = async (req, res, next) => {
+  try {
+    const { totalPrice, dropoff_location, pickup_district, pickup_location } = req.body;
+
+    if (
+      !totalPrice ||
+      !dropoff_location ||
+      !pickup_district ||
+      !pickup_location
+    ) {
+      return next(errorHandler(400, "Missing Required Feilds Process Cancelled"));
+    }
+
+    const instance = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_SECRET,
+    });
+
+    const options = {
+      amount: Math.round(totalPrice * 100), // amount in smallest currency unit
+      currency: "INR",
+    };
+
+    const order = await instance.orders.create(options);
+
+    if (!order) return res.status(500).send("Some error occured");
+    res.status(200).json(order);
+  } catch (error) {
+    console.error("Razorpay order creation error:", error);
+    next(errorHandler(500, "error occured in razorpayorder"));
+  }
+};
 
 // getting vehicles without booking for selected Date and location
 export const getVehiclesWithoutBooking = async (req, res, next) => {
