@@ -13,6 +13,8 @@ const bookingSchema = new mongoose.Schema({
   dropOffLocation: { type: String, required: true },
   pickUpDistrict: { type: String, required: false },
   totalPrice: { type: Number, required: true },
+  razorpayOrderId: { type: String, required: true },
+  razorpayPaymentId: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   status: {
     type: String,

@@ -5,6 +5,10 @@ import {
   filterVehicles,
   showOneofkind,
   showAllVariants,
+  BookCar,
+  razorpayOrder,
+  latestbookings,
+  sendBookingDetailsEamil,
 } from "../controllers/userControllers/userBookingController.js";
 
 const router = express.Router();
@@ -14,5 +18,11 @@ router.post("/showVehicleDetails", showVehicleDetails);
 router.post("/filterVehicles", filterVehicles);
 router.post("/getVehiclesWithoutBooking", getVehiclesWithoutBooking, showAllVariants);
 router.post("/showSingleofSameModel", getVehiclesWithoutBooking, showOneofkind);
+
+// Payment & booking routes
+router.post("/razorpay", razorpayOrder);
+router.post("/bookCar", BookCar);
+router.post("/latestbookings", latestbookings);
+router.post("/sendBookingDetailsEamil", sendBookingDetailsEamil);
 
 export default router;
