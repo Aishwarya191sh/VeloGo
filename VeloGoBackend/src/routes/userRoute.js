@@ -9,6 +9,7 @@ import {
   razorpayOrder,
   latestbookings,
   sendBookingDetailsEamil,
+  findBookingsOfUser,
 } from "../controllers/userControllers/userBookingController.js";
 
 const router = express.Router();
@@ -24,5 +25,6 @@ router.post("/razorpay", razorpayOrder);
 router.post("/bookCar", BookCar);
 router.post("/latestbookings", latestbookings);
 router.post("/sendBookingDetailsEamil", sendBookingDetailsEamil);
+router.post("/findBookingsOfUser", findBookingsOfUser);
 
 export default router;
