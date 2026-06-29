@@ -6,6 +6,8 @@ import {
   showOneofkind,
   showAllVariants,
   razorpayOrder,
+  BookCar,
+  latestbookings,
 } from "../controllers/userControllers/userBookingController.js";
 
 const router = express.Router();
@@ -16,7 +18,9 @@ router.post("/filterVehicles", filterVehicles);
 router.post("/getVehiclesWithoutBooking", getVehiclesWithoutBooking, showAllVariants);
 router.post("/showSingleofSameModel", getVehiclesWithoutBooking, showOneofkind);
 
-// Payment routes
+// Payment & booking routes
 router.post("/razorpay", razorpayOrder);
+router.post("/bookCar", BookCar);
+router.post("/latestbookings", latestbookings);
 
 export default router;

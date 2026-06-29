@@ -5,6 +5,50 @@ import Razorpay from "razorpay";
 import { availableAtDate } from "../../services/checkAvailableVehicle.js";
 import Vehicle from "../../models/vehicleModel.js";
 
+export const BookCar = async (req, res, next) => {
+  try {
+    if (!req.body) {
+      return next(errorHandler(401, "bad request on body"));
+    }
+
+    const {
+      user_id,
+      vehicle_id,
+      totalPrice,
+      pickupDate,
+      dropoffDate,
+      pickup_location,
+      dropoff_location,
+      pickup_district,
+      razorpayPaymentId,
+      razorpayOrderId,
+    } = req.body;
+
+    const book = new Booking({
+      pickupDate,
+      dropOffDate: dropoffDate,
+      userId: user_id,
+      pickUpLocation: pickup_location,
+      vehicleId: vehicle_id,
+      dropOffLocation: dropoff_location,
+      pickUpDistrict: pickup_district,
+      totalPrice,
+      razorpayPaymentId,
+      razorpayOrderId,
+      status: "booked",
+    });
+
+    const booked = await book.save();
+    res.status(200).json({
+      message: "car booked successfully",
+      booked,
+    });
+  } catch (error) {
+    console.error("Book car error:", error);
+    next(errorHandler(500, "error while booking car"));
+  }
+};
+
 // creating razorpay order instance
 export const razorpayOrder = async (req, res, next) => {
   try {
@@ -209,5 +253,51 @@ export const filterVehicles = async (req, res, next) => {
   } catch (error) {
     console.error("Filter vehicles error:", error);
     next(errorHandler(500, "internal server error in filterVehicles"));
+  }
+};
+
+// api to get the latest booking details
+export const latestbookings = async (req, res, next) => {
+  try {
+    const { user_id } = req.body;
+    const convertedUserId = new mongoose.Types.ObjectId(user_id);
+
+    const bookings = await Booking.aggregate([
+      {
+        $match: {
+          userId: convertedUserId,
+        },
+      },
+      {
+        $lookup: {
+          from: "vehicles",
+          localField: "vehicleId",
+          foreignField: "_id",
+          as: "result",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          bookingDetails: "$$ROOT",
+          vehicleDetails: {
+            $arrayElemAt: ["$result", 0],
+          },
+        },
+      },
+      {
+        $sort: {
+          "bookingDetails.createdAt": -1,
+        },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Latest bookings error:", error);
+    next(errorHandler(500, "internal server error in latestbookings"));
   }
 };
