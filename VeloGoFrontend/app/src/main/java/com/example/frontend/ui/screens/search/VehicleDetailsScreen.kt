@@ -198,7 +198,7 @@ fun VehicleDetailsScreen(
                                     durationDays = durationDays,
                                     totalPrice = totalPrice,
                                     onBookClick = {
-                                        Toast.makeText(context, "Booking flow will be enabled in the Booking module", Toast.LENGTH_SHORT).show()
+                                        navController.navigate(Screen.Checkout.route)
                                     }
                                 )
                             }
@@ -246,7 +246,7 @@ fun VehicleDetailsScreen(
                                     durationDays = durationDays,
                                     totalPrice = totalPrice,
                                     onBookClick = {
-                                        Toast.makeText(context, "Booking flow will be enabled in the Booking module", Toast.LENGTH_SHORT).show()
+                                        navController.navigate(Screen.Checkout.route)
                                     }
                                 )
                             }
