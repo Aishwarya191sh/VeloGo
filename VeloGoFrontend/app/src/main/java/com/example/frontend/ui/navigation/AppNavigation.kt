@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,6 +17,7 @@ import com.example.frontend.ui.components.MainLayoutScaffold
 import com.example.frontend.ui.screens.auth.*
 import com.example.frontend.ui.screens.search.*
 import com.example.frontend.ui.screens.booking.*
+import com.example.frontend.ui.screens.orders.*
 import com.example.frontend.ui.screens.home.HomeScreen
 
 @Composable
@@ -34,7 +36,8 @@ fun AppNavigation(
         Screen.Home.route,
         Screen.Search.route,
         Screen.SearchResults.route,
-        Screen.VehicleDetails.route
+        Screen.VehicleDetails.route,
+        Screen.Orders.route
     )
 
     val startDestination = if (currentSession != null) {
@@ -169,6 +172,14 @@ fun CustomerNavHost(
         composable(Screen.BookingSuccess.route) {
             BookingSuccessScreen(
                 navController = navController
+            )
+        }
+
+        composable(Screen.Orders.route) {
+            val ordersViewModel: OrdersViewModel = hiltViewModel()
+            OrdersScreen(
+                navController = navController,
+                viewModel = ordersViewModel
             )
         }
     }
