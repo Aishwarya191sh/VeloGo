@@ -19,6 +19,7 @@ import com.example.frontend.ui.screens.search.*
 import com.example.frontend.ui.screens.booking.*
 import com.example.frontend.ui.screens.orders.*
 import com.example.frontend.ui.screens.vendor.*
+import com.example.frontend.ui.screens.admin.*
 import com.example.frontend.ui.screens.home.HomeScreen
 
 @Composable
@@ -44,6 +45,7 @@ fun AppNavigation(
     val startDestination = if (currentSession != null) {
         when {
             currentSession!!.isVendor -> Screen.VendorDashboard.route
+            currentSession!!.isAdmin -> Screen.AdminDashboard.route
             else -> Screen.Home.route
         }
     } else {
@@ -110,7 +112,9 @@ fun CustomerNavHost(
                     }
                 },
                 onNavigateToAdmin = {
-                    // Placeholder
+                    navController.navigate(Screen.AdminDashboard.route) {
+                        popUpTo(Screen.SignIn.route) { inclusive = true }
+                    }
                 },
                 onNavigateToSignUp = {
                     navController.navigate(Screen.SignUp.route)
@@ -230,6 +234,20 @@ fun CustomerNavHost(
                 onSignOut = {
                     authViewModel.signOut()
                     navController.navigate(Screen.VendorSignIn.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Screen.AdminDashboard.route) {
+            val adminViewModel: AdminViewModel = hiltViewModel()
+            AdminDashboardScreen(
+                navController = navController,
+                viewModel = adminViewModel,
+                onSignOut = {
+                    authViewModel.signOut()
+                    navController.navigate(Screen.SignIn.route) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
