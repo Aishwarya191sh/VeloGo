@@ -58,8 +58,3 @@ data class VendorBookingResponseItem(
     val createdAt: String?,
     val vehicleDetails: VehicleDto
 )
-
-data class ChangeBookingStatusRequest(
-    val id: String,
-    val status: String
-)
