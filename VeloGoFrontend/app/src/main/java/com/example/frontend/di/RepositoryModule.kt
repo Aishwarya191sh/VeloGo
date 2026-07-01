@@ -8,6 +8,8 @@ import com.example.frontend.data.repository.BookingRepositoryImpl
 import com.example.frontend.domain.repository.BookingRepository
 import com.example.frontend.data.repository.VendorRepositoryImpl
 import com.example.frontend.domain.repository.VendorRepository
+import com.example.frontend.data.repository.AdminRepositoryImpl
+import com.example.frontend.domain.repository.AdminRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -41,4 +43,10 @@ abstract class RepositoryModule {
     abstract fun bindVendorRepository(
         vendorRepositoryImpl: VendorRepositoryImpl
     ): VendorRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAdminRepository(
+        adminRepositoryImpl: AdminRepositoryImpl
+    ): AdminRepository
 }
