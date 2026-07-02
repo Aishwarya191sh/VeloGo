@@ -169,7 +169,7 @@ fun ImageCarousel(
 
 // 4. Custom Button with optional loading state
 @Composable
-fun RentARideButton(
+fun VeloGoButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -252,7 +252,7 @@ fun RentARideButton(
 
 // 5. Custom Text Field
 @Composable
-fun RentARideTextField(
+fun VeloGoTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
@@ -480,7 +480,7 @@ fun EmptyOrErrorStateView(
 
 // 7. Date Picker Dialog Picker helper
 @Composable
-fun RentARideDatePicker(
+fun VeloGoDatePicker(
     label: String,
     selectedDate: Calendar?,
     onDateSelected: (Calendar) -> Unit,
@@ -535,7 +535,7 @@ fun RentARideDatePicker(
 
 // 8. Time Picker Dialog helper
 @Composable
-fun RentARideTimePicker(
+fun VeloGoTimePicker(
     label: String,
     selectedTime: Calendar?,
     onTimeSelected: (Int, Int) -> Unit,

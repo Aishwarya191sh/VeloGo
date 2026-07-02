@@ -59,7 +59,7 @@ fun AppNavigation(
         MainLayoutScaffold(
             navController = navController,
             userName = currentSession?.username ?: "Shreyas",
-            userEmail = currentSession?.email ?: "shreyas@rentaride.com",
+            userEmail = currentSession?.email ?: "shreyas@velogo.com",
             onSignOut = {
                 authViewModel.signOut()
                 navController.navigate(Screen.SignIn.route) {

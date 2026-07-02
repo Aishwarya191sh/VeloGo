@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.frontend.R
-import com.example.frontend.ui.components.RentARideTextField
+import com.example.frontend.ui.components.VeloGoTextField
 import com.example.frontend.ui.theme.EmeraldPrimary
 import com.example.frontend.ui.theme.SlateGrey
 
@@ -45,7 +45,7 @@ fun SearchScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            RentARideTextField(
+            VeloGoTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 label = "Search by model or brand",

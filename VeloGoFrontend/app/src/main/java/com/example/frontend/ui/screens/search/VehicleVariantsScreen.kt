@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -33,7 +34,7 @@ import com.example.frontend.domain.model.SearchFilters
 import com.example.frontend.domain.model.SortOption
 import com.example.frontend.domain.model.Vehicle
 import com.example.frontend.ui.components.EmptyOrErrorStateView
-import com.example.frontend.ui.components.RentARideButton
+import com.example.frontend.ui.components.VeloGoButton
 import com.example.frontend.ui.components.bounceClick
 import com.example.frontend.ui.navigation.Screen
 import com.example.frontend.ui.theme.EmeraldPrimary
@@ -66,7 +67,7 @@ fun VehicleVariantsScreen(
         ) {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
                     tint = MaterialTheme.colorScheme.onSurface
                 )
@@ -286,7 +287,7 @@ fun VariantCard(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Divider(color = SlateGrey.copy(alpha = 0.12f))
+            HorizontalDivider(color = SlateGrey.copy(alpha = 0.12f))
             Spacer(modifier = Modifier.height(12.dp))
 
             // Specs grid
@@ -295,14 +296,14 @@ fun VariantCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 SpecIconText(icon = Icons.Default.Face, text = "${vehicle.seats ?: 5} Seats")
-                SpecIconText(icon = Icons.Default.Settings, text = vehicle.transmission?.capitalize() ?: "Automatic")
-                SpecIconText(icon = Icons.Default.Info, text = vehicle.fuelType?.capitalize() ?: "Petrol")
+                SpecIconText(icon = Icons.Default.Settings, text = vehicle.transmission?.replaceFirstChar { it.uppercase() } ?: "Automatic")
+                SpecIconText(icon = Icons.Default.Info, text = vehicle.fuelType?.replaceFirstChar { it.uppercase() } ?: "Petrol")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             // Book Ride CTA button
-            RentARideButton(
+            VeloGoButton(
                 text = "Book Ride",
                 onClick = onBookClick,
                 containerColor = EmeraldPrimary,
@@ -381,7 +382,7 @@ fun FilterSheetContent(
                             selectedTransmissions + trans
                         }
                     },
-                    label = { Text(trans.capitalize()) }
+                    label = { Text(trans.replaceFirstChar { it.uppercase() }) }
                 )
             }
         }
@@ -421,7 +422,7 @@ fun FilterSheetContent(
                             selectedFuelTypes + fuel
                         }
                     },
-                    label = { Text(fuel.capitalize()) }
+                    label = { Text(fuel.replaceFirstChar { it.uppercase() }) }
                 )
             }
         }
@@ -446,7 +447,7 @@ fun FilterSheetContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        RentARideButton(
+        VeloGoButton(
             text = "Apply Filters",
             onClick = {
                 onApply(
