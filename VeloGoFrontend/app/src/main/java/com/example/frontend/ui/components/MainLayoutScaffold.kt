@@ -50,18 +50,21 @@ fun MainLayoutScaffold(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    // Map routes to bottom navigation destinations
     val bottomNavItems = listOf(
         BottomNavItem("Home", Screen.Home.route, R.drawable.ic_home),
         BottomNavItem("Search", Screen.Search.route, R.drawable.ic_search),
-        BottomNavItem("Orders", Screen.Orders.route, R.drawable.ic_orders)
+        BottomNavItem("Orders", Screen.Orders.route, R.drawable.ic_orders),
+        BottomNavItem("Profile", Screen.Profile.route, R.drawable.ic_profile)
     )
 
     // Determine screen titles for TopAppBar
     val screenTitle = when (currentRoute) {
         Screen.Home.route -> "Dashboard"
         Screen.Search.route -> "Search Vehicles"
-        Screen.SearchResults.route -> "Search Results"
         Screen.Orders.route -> "My Bookings"
+        Screen.Profile.route -> "My Profile"
+        Screen.SearchResults.route -> "Search Results"
         else -> "VeloGo"
     }
 
@@ -139,6 +142,46 @@ fun MainLayoutScaffold(
                         }
                     },
                     icon = { Icon(painter = painterResource(id = R.drawable.ic_home), contentDescription = null) },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = EmeraldPrimaryContainer,
+                        selectedIconColor = OnEmeraldPrimaryContainer,
+                        selectedTextColor = OnEmeraldPrimaryContainer
+                    ),
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                )
+
+                NavigationDrawerItem(
+                    label = { Text("My Profile", fontWeight = FontWeight.SemiBold) },
+                    selected = currentRoute == Screen.Profile.route,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        if (currentRoute != Screen.Profile.route) {
+                            navController.navigate(Screen.Profile.route) {
+                                launchSingleTop = true
+                            }
+                        }
+                    },
+                    icon = { Icon(painter = painterResource(id = R.drawable.ic_profile), contentDescription = null) },
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = EmeraldPrimaryContainer,
+                        selectedIconColor = OnEmeraldPrimaryContainer,
+                        selectedTextColor = OnEmeraldPrimaryContainer
+                    ),
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                )
+
+                NavigationDrawerItem(
+                    label = { Text("My Bookings", fontWeight = FontWeight.SemiBold) },
+                    selected = currentRoute == Screen.Orders.route,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        if (currentRoute != Screen.Orders.route) {
+                            navController.navigate(Screen.Orders.route) {
+                                launchSingleTop = true
+                            }
+                        }
+                    },
+                    icon = { Icon(painter = painterResource(id = R.drawable.ic_orders), contentDescription = null) },
                     colors = NavigationDrawerItemDefaults.colors(
                         selectedContainerColor = EmeraldPrimaryContainer,
                         selectedIconColor = OnEmeraldPrimaryContainer,
@@ -238,10 +281,16 @@ fun MainLayoutScaffold(
                             onClick = {
                                 if (currentRoute != item.route) {
                                     navController.navigate(item.route) {
+                                        // Pop up to the start destination of the graph to
+                                        // avoid building up a large stack of destinations
+                                        // on the back stack as users select items
                                         popUpTo(Screen.Home.route) {
                                             saveState = true
                                         }
+                                        // Avoid multiple copies of the same destination when
+                                        // reselecting the same item
                                         launchSingleTop = true
+                                        // Restore state when reselecting a previously selected item
                                         restoreState = item.route != Screen.Home.route
                                     }
                                 }
