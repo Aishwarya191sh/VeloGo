@@ -1,5 +1,7 @@
 import express from "express";
 import { listAllVehicles, showVehicleDetails } from "../controllers/userControllers/userAllVehiclesController.js";
+import { updateUser, deleteUser, signOut } from "../controllers/userControllers/userController.js";
+import { editUserProfile } from "../controllers/userControllers/userProfileController.js";
 import {
   getVehiclesWithoutBooking,
   filterVehicles,
@@ -14,6 +16,13 @@ import {
 
 const router = express.Router();
 
+// User profile & account management routes
+router.post("/update/:id", updateUser);
+router.delete("/delete/:id", deleteUser);
+router.get("/signout", signOut);
+router.post("/editUserProfile/:id", editUserProfile);
+
+// Vehicle list & search routes
 router.get("/listAllVehicles", listAllVehicles);
 router.post("/showVehicleDetails", showVehicleDetails);
 router.post("/filterVehicles", filterVehicles);

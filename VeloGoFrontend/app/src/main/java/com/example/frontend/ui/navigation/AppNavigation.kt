@@ -20,6 +20,8 @@ import com.example.frontend.ui.screens.booking.*
 import com.example.frontend.ui.screens.orders.*
 import com.example.frontend.ui.screens.vendor.*
 import com.example.frontend.ui.screens.admin.*
+import com.example.frontend.ui.screens.profile.*
+import com.example.frontend.ui.screens.settings.*
 import com.example.frontend.ui.screens.home.HomeScreen
 
 @Composable
@@ -39,7 +41,8 @@ fun AppNavigation(
         Screen.Search.route,
         Screen.SearchResults.route,
         Screen.VehicleDetails.route,
-        Screen.Orders.route
+        Screen.Orders.route,
+        Screen.Profile.route
     )
 
     val startDestination = if (currentSession != null) {
@@ -252,6 +255,32 @@ fun CustomerNavHost(
                     }
                 }
             )
+        }
+
+        composable(Screen.Profile.route) {
+            val profileViewModel: ProfileViewModel = hiltViewModel()
+            ProfileScreen(
+                navController = navController,
+                viewModel = profileViewModel,
+                onSignOut = {
+                    authViewModel.signOut()
+                    navController.navigate(Screen.SignIn.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Screen.Settings.route) {
+            val settingsViewModel: SettingsViewModel = hiltViewModel()
+            SettingsScreen(
+                navController = navController,
+                viewModel = settingsViewModel
+            )
+        }
+
+        composable(Screen.About.route) {
+            AboutScreen(navController = navController)
         }
     }
 }

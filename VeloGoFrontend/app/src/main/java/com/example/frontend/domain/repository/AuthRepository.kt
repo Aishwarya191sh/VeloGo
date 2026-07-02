@@ -12,4 +12,5 @@ interface AuthRepository {
     fun getSessionDetails(): Flow<User?>
     fun vendorSignIn(email: String, password: String): Flow<Resource<User>>
     fun vendorSignUp(username: String, email: String, password: String): Flow<Resource<String>>
+    fun editUserProfile(userId: String, username: String, email: String, phoneNumber: String, adress: String): Flow<Resource<User>>
 }

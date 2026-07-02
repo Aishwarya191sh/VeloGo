@@ -3,6 +3,7 @@ package com.example.frontend.data.repository
 import com.example.frontend.data.local.pref.SessionManager
 import com.example.frontend.data.mapper.toDomain
 import com.example.frontend.data.remote.api.AuthApi
+import com.example.frontend.data.remote.api.UserApi
 import com.example.frontend.data.remote.dto.*
 import com.example.frontend.domain.model.User
 import com.example.frontend.domain.repository.AuthRepository
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val api: AuthApi,
+    private val userApi: UserApi,
     private val sessionManager: SessionManager
 ) : AuthRepository {
 
@@ -247,5 +249,41 @@ class AuthRepositoryImpl @Inject constructor(
             }
         }
         return null
+    }
+
+    override fun editUserProfile(
+        userId: String,
+        username: String,
+        email: String,
+        phoneNumber: String,
+        adress: String
+    ): Flow<Resource<User>> = flow {
+        emit(Resource.Loading)
+        try {
+            val formData = EditProfileFormData(
+                username = username,
+                email = email,
+                phoneNumber = phoneNumber,
+                adress = adress
+            )
+            val request = EditProfileRequest(formData)
+            val response = userApi.editUserProfile(userId, request)
+            if (response.isSuccessful && response.body() != null) {
+                val userResponse = response.body()!!
+                val user = userResponse.toDomain()
+                sessionManager.updateProfileDetails(
+                    username = user.username,
+                    email = user.email,
+                    phoneNumber = user.phoneNumber,
+                    adress = user.adress
+                )
+                emit(Resource.Success(user))
+            } else {
+                val errorMsg = parseError(response.errorBody()?.string())
+                emit(Resource.Error(errorMsg))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage ?: "Network error", e))
+        }
     }
 }
