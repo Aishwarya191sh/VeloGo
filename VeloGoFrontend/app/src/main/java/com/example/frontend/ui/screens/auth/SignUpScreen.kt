@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.frontend.R
 import com.example.frontend.ui.components.GoogleSignInButton
-import com.example.frontend.ui.components.RentARideButton
-import com.example.frontend.ui.components.RentARideTextField
+import com.example.frontend.ui.components.VeloGoButton
+import com.example.frontend.ui.components.VeloGoTextField
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -229,7 +229,7 @@ fun SignUpScreen(
                     modifier = Modifier.padding(cardPadding)
                 ) {
                     // Username Input
-                    RentARideTextField(
+                    VeloGoTextField(
                         value = username,
                         onValueChange = {
                             username = it
@@ -246,7 +246,7 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(14.dp))
 
                     // Email Input
-                    RentARideTextField(
+                    VeloGoTextField(
                         value = email,
                         onValueChange = {
                             email = it
@@ -264,7 +264,7 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.height(14.dp))
 
                     // Password Input
-                    RentARideTextField(
+                    VeloGoTextField(
                         value = password,
                         onValueChange = {
                             password = it
@@ -316,7 +316,7 @@ fun SignUpScreen(
                     }
 
                     // Register Button
-                    RentARideButton(
+                    VeloGoButton(
                         text = "Register",
                         onClick = {
                             var isValid = true

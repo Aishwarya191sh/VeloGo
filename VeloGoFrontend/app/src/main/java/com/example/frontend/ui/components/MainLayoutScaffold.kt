@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 fun MainLayoutScaffold(
     navController: NavController,
     userName: String = "Customer",
-    userEmail: String = "customer@rentaride.com",
+    userEmail: String = "customer@velogo.com",
     onSignOut: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {

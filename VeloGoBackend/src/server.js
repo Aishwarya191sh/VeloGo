@@ -21,7 +21,6 @@ App.use(express.json());
 App.use(cookieParser());
 
 const allowedOrigins = [
-  "https://rent-a-ride-two.vercel.app",
   "http://localhost:5173",
 ];
 App.use(

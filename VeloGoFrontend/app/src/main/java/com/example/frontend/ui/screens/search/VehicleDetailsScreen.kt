@@ -13,6 +13,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -42,7 +44,7 @@ import coil.request.ImageRequest
 import com.example.frontend.R
 import com.example.frontend.domain.model.Vehicle
 import com.example.frontend.ui.components.EmptyOrErrorStateView
-import com.example.frontend.ui.components.RentARideButton
+import com.example.frontend.ui.components.VeloGoButton
 import com.example.frontend.ui.components.shimmerLoading
 import com.example.frontend.ui.theme.EmeraldPrimary
 import com.example.frontend.ui.theme.EmeraldPrimaryContainer
@@ -83,7 +85,7 @@ fun VehicleDetailsScreen(
                 title = { Text("Vehicle Details", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
@@ -510,7 +512,7 @@ fun SpecificationsGrid(vehicle: Vehicle) {
                 modifier = Modifier.weight(1f)
             )
             SpecificationCard(
-                icon = Icons.Default.List,
+                icon = Icons.AutoMirrored.Filled.List,
                 label = "Vehicle Type",
                 value = vehicle.carType?.uppercase(Locale.getDefault()) ?: "SEDAN",
                 modifier = Modifier.weight(1f)
@@ -682,7 +684,7 @@ fun PickupInfoCard(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Divider(color = EmeraldPrimary.copy(alpha = 0.1f))
+            HorizontalDivider(color = EmeraldPrimary.copy(alpha = 0.1f))
             Spacer(modifier = Modifier.height(12.dp))
 
             // Drop off
@@ -754,7 +756,7 @@ fun StickyBottomBookingBar(
             }
         }
 
-        RentARideButton(
+        VeloGoButton(
             text = "Book Now",
             onClick = onBookClick,
             modifier = Modifier.width(160.dp),
@@ -802,7 +804,7 @@ fun TabletBookingPanel(
                 Text(text = "$durationDays Days", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
             }
 
-            Divider(color = SlateGrey.copy(alpha = 0.12f))
+            HorizontalDivider(color = SlateGrey.copy(alpha = 0.12f))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -815,7 +817,7 @@ fun TabletBookingPanel(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            RentARideButton(
+            VeloGoButton(
                 text = "Book Now",
                 onClick = onBookClick,
                 enabled = !vehicle.isBooked,

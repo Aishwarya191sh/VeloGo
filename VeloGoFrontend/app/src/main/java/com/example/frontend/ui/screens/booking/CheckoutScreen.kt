@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -30,8 +31,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.frontend.R
 import com.example.frontend.ui.components.EmptyOrErrorStateView
-import com.example.frontend.ui.components.RentARideButton
-import com.example.frontend.ui.components.RentARideTextField
+import com.example.frontend.ui.components.VeloGoButton
+import com.example.frontend.ui.components.VeloGoTextField
 import com.example.frontend.ui.screens.search.SearchFlowViewModel
 import com.example.frontend.ui.util.Constants
 import org.json.JSONObject
@@ -99,7 +100,7 @@ fun CheckoutScreen(
                 title = { Text("Checkout Summary", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -214,7 +215,7 @@ fun CheckoutScreen(
 
                         if (uiState.isRecoveryState) {
                             // Recovery Retry button
-                            RentARideButton(
+                            VeloGoButton(
                                 text = "Retry Booking",
                                 onClick = { viewModel.retrySaveBooking() },
                                 modifier = Modifier.width(180.dp),
@@ -222,7 +223,7 @@ fun CheckoutScreen(
                             )
                         } else {
                             // Standard Checkout order button
-                            RentARideButton(
+                            VeloGoButton(
                                 text = "Place Order",
                                 onClick = {
                                     viewModel.startPlaceOrder { orderId, totalAmount ->
@@ -502,7 +503,7 @@ fun PaymentFormCard(
                 }
             }
 
-            RentARideTextField(
+            VeloGoTextField(
                 value = uiState.email,
                 onValueChange = { viewModel.onEmailChange(it) },
                 label = "Billing Email",
@@ -510,7 +511,7 @@ fun PaymentFormCard(
                 leadingIcon = Icons.Default.Email
             )
 
-            RentARideTextField(
+            VeloGoTextField(
                 value = uiState.phoneNumber,
                 onValueChange = { viewModel.onPhoneChange(it) },
                 label = "Billing Contact Phone",
@@ -519,7 +520,7 @@ fun PaymentFormCard(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
             )
 
-            RentARideTextField(
+            VeloGoTextField(
                 value = uiState.address,
                 onValueChange = { viewModel.onAddressChange(it) },
                 label = "Billing Address",

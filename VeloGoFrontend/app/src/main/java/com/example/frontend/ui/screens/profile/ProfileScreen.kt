@@ -14,7 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
@@ -68,7 +68,7 @@ fun ProfileScreen(
     }
 
     val userName: String = user?.username?.takeIf { it.isNotBlank() } ?: "Guest User"
-    val userEmail: String = user?.email?.takeIf { it.isNotBlank() } ?: "guest@rentaride.com"
+    val userEmail: String = user?.email?.takeIf { it.isNotBlank() } ?: "guest@velogo.com"
     val userPhone: String = user?.phoneNumber?.takeIf { it.isNotBlank() } ?: "Not Added"
     val userAddress: String = user?.adress?.takeIf { it.isNotBlank() } ?: "Not Added"
 
@@ -338,7 +338,7 @@ fun ProfileItemRow(
         }
 
         if (onClick != null) {
-            Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = null, tint = SlateGrey)
+            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = SlateGrey)
         }
     }
 }

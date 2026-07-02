@@ -20,6 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -129,7 +131,7 @@ fun VendorDashboardScreen(
                 actions = {
                     IconButton(onClick = onSignOut) {
                         Icon(
-                            imageVector = Icons.Default.ExitToApp,
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                             contentDescription = "Sign Out",
                             tint = MaterialTheme.colorScheme.error
                         )
@@ -343,7 +345,7 @@ fun VehicleItemCard(
                 StatusBadge(isAdminApproved = vehicle.isAdminApproved, isRejected = vehicle.isRejected)
             }
 
-            Divider(color = SlateGrey.copy(alpha = 0.08f), modifier = Modifier.padding(vertical = 12.dp))
+            HorizontalDivider(color = SlateGrey.copy(alpha = 0.08f), modifier = Modifier.padding(vertical = 12.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -425,7 +427,7 @@ fun BookingsTabContent(
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
-                            imageVector = Icons.Default.List,
+                            imageVector = Icons.AutoMirrored.Filled.List,
                             contentDescription = null,
                             modifier = Modifier.size(64.dp),
                             tint = SlateGrey.copy(alpha = 0.5f)
@@ -544,7 +546,7 @@ fun BookingItemCard(
                 }
             }
 
-            Divider(color = SlateGrey.copy(alpha = 0.08f), modifier = Modifier.padding(vertical = 12.dp))
+            HorizontalDivider(color = SlateGrey.copy(alpha = 0.08f), modifier = Modifier.padding(vertical = 12.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

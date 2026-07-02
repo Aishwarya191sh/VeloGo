@@ -347,7 +347,7 @@ export const sendBookingDetailsEamil = (req, res, next) => {
     const mailOptions = {
       from: process.env.EMAIL_HOST,
       to: toEmail,
-      subject: "rentaride.shop booking details",
+      subject: "VeloGo Booking Details",
       html: generateEmailHtml(data[0].bookingDetails, data[0].vehicleDetails),
     };
 

@@ -34,7 +34,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.frontend.R
-import com.example.frontend.ui.components.RentARideButton
+import com.example.frontend.ui.components.VeloGoButton
 import com.example.frontend.ui.theme.EmeraldPrimary
 import com.example.frontend.ui.theme.EmeraldPrimaryContainer
 import com.example.frontend.ui.theme.OnEmeraldPrimaryContainer
@@ -200,7 +200,7 @@ fun BookingSuccessScreen(
 
         Spacer(modifier = Modifier.height(36.dp))
 
-        RentARideButton(
+        VeloGoButton(
             text = "Back to Dashboard",
             onClick = {
                 navController.navigate("home") {

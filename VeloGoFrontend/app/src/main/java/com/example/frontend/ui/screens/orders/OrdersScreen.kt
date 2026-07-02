@@ -32,7 +32,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.frontend.R
 import com.example.frontend.domain.model.BookingDetails
-import com.example.frontend.ui.components.RentARideButton
+import com.example.frontend.ui.components.VeloGoButton
 import com.example.frontend.ui.components.shimmerLoading
 import com.example.frontend.ui.theme.EmeraldPrimary
 import com.example.frontend.ui.theme.SlateGrey
@@ -141,7 +141,7 @@ fun OrdersScreen(
                                 style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.padding(bottom = 16.dp)
                             )
-                            RentARideButton(
+                            VeloGoButton(
                                 text = "Retry",
                                 onClick = { viewModel.fetchBookings() },
                                 modifier = Modifier.width(120.dp)
@@ -330,7 +330,7 @@ fun OrderCard(
                 )
             }
 
-            Divider(modifier = Modifier.padding(vertical = 12.dp), color = SlateGrey.copy(alpha = 0.1f))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = SlateGrey.copy(alpha = 0.1f))
 
             // Footer: Pick / Drop Locations Summary + Action button
             Row(
@@ -413,7 +413,7 @@ fun OrderDetailsDialog(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 
-                Divider(modifier = Modifier.padding(vertical = 12.dp), color = SlateGrey.copy(alpha = 0.1f))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = SlateGrey.copy(alpha = 0.1f))
 
                 // Scrollable content area for tablet compatibility
                 Column(
@@ -455,7 +455,7 @@ fun OrderDetailsDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Bottom Action OK button
-                RentARideButton(
+                VeloGoButton(
                     text = "Close",
                     onClick = onDismiss,
                     modifier = Modifier.fillMaxWidth()

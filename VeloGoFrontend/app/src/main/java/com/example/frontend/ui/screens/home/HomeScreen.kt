@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.frontend.R
 import com.example.frontend.ui.components.RatingBar
-import com.example.frontend.ui.components.RentARideButton
-import com.example.frontend.ui.components.RentARideDatePicker
-import com.example.frontend.ui.components.RentARideTimePicker
+import com.example.frontend.ui.components.VeloGoButton
+import com.example.frontend.ui.components.VeloGoDatePicker
+import com.example.frontend.ui.components.VeloGoTimePicker
 import com.example.frontend.ui.navigation.Screen
 import com.example.frontend.ui.theme.EmeraldPrimary
 import com.example.frontend.ui.theme.EmeraldPrimaryContainer
@@ -285,7 +285,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            RentARideDatePicker(
+                            VeloGoDatePicker(
                                 label = "Pick-up Date",
                                 selectedDate = uiState.pickupDateTime,
                                 onDateSelected = { newDate ->
@@ -298,7 +298,7 @@ fun HomeScreen(
                                 }
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            RentARideTimePicker(
+                            VeloGoTimePicker(
                                 label = "Pick-up Time",
                                 selectedTime = uiState.pickupDateTime,
                                 onTimeSelected = { h, m ->
@@ -312,7 +312,7 @@ fun HomeScreen(
                         }
 
                         Column(modifier = Modifier.weight(1f)) {
-                            RentARideDatePicker(
+                            VeloGoDatePicker(
                                 label = "Drop-off Date",
                                 selectedDate = uiState.dropoffDateTime,
                                 onDateSelected = { newDate ->
@@ -326,7 +326,7 @@ fun HomeScreen(
                                 minDate = uiState.pickupDateTime ?: Calendar.getInstance()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            RentARideTimePicker(
+                            VeloGoTimePicker(
                                 label = "Drop-off Time",
                                 selectedTime = uiState.dropoffDateTime,
                                 onTimeSelected = { h, m ->
@@ -350,7 +350,7 @@ fun HomeScreen(
                     }
 
                     // Search Button
-                    RentARideButton(
+                    VeloGoButton(
                         text = "Search Available Cars",
                         onClick = {
                             if (uiState.pickupDateTime == null || uiState.dropoffDateTime == null) {

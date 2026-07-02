@@ -20,7 +20,7 @@ enum class AppTheme {
 
 @Singleton
 class SettingsManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
     companion object {
         private val THEME_KEY = stringPreferencesKey("app_theme")
